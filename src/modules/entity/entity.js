@@ -567,7 +567,9 @@ function drupalgap_entity_build_from_form_state(form, form_state) {
  */
 function drupalgap_entity_form_submit(form, form_state, entity) {
   try {
-
+	// Disabling the submit button to prevent multiple submission
+	var submitButton = $('#' + form.id + ' button.dg_form_submit_button');
+	$(submitButton).prop('disabled', true);
     // Grab the primary key name for this entity type.
     var primary_key = entity_primary_key(form.entity_type);
 
@@ -617,7 +619,10 @@ function drupalgap_entity_form_submit(form, form_state, entity) {
         // If there were any form errors, display them in an alert.
         var msg = _drupalgap_form_submit_response_errors(form, form_state, xhr,
           status, message);
-        if (msg) { drupalgap_alert(msg); }
+        if (msg) { 
+		$(submitButton).prop('disabled', false);
+		drupalgap_alert(msg);
+		 }
       }
       catch (error) {
         console.log('drupalgap_entity_form_submit - error - ' + error);
