@@ -24,6 +24,9 @@ function drupalgap_form_onkeypress(form_id) {
  */
 function _drupalgap_form_submit(form_id) {
   try {
+	// Disabling the submit button to prevent multiple submission
+	var submitButton = $('#' + form_id + ' button.dg_form_submit_button');
+	$(submitButton).prop('disabled', true);
     // Load the form from local storage.
     var form = drupalgap_form_local_storage_load(form_id);
     if (!form) {
@@ -63,7 +66,9 @@ function _drupalgap_form_submit(form_id) {
               var message = drupalgap.form_errors[name];
               html += message + '\n\n';
           }
-          drupalgap_alert(html);
+	    //Enabling the submit button again
+	    $(submitButton).prop('disabled', false);
+	    drupalgap_alert(html);
         }
         else { form_submission(); }
       }
